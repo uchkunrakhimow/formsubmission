@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { generateToken } from "../services/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,7 +31,7 @@ const TokenGenerator = () => {
       setError(
         err.response?.data?.message ||
           err.message ||
-          "Не удалось сгенерировать токен",
+          "Не удалось сгенерировать токен"
       );
     } finally {
       setLoading(false);
@@ -76,11 +76,17 @@ const TokenGenerator = () => {
                 <Label htmlFor="phoneNumber">Номер телефона</Label>
                 <Input
                   id="phoneNumber"
+                  type="number"
+                  maxLength={9}
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   placeholder="Введите номер телефона"
                   required
                 />
+                <p className="text-sm">
+                  Введите номер телефона в формате:{" "}
+                  <span className="font-bold">901234567</span>
+                </p>
               </div>
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
