@@ -8,7 +8,7 @@ COPY packages/api/package.json ./packages/api/
 COPY packages/ui/package.json ./packages/ui/
 
 # Install global dependencies
-RUN npm install -g pnpm@latest pm2@latest
+RUN npm install -g pm2@latest pnpm@latest
 
 # Install architecture-specific Rollup module for ARM64 | AMD64
 RUN if [ "$(uname -m)" = "aarch64" ]; then \
@@ -17,11 +17,11 @@ RUN if [ "$(uname -m)" = "aarch64" ]; then \
       npm install @rollup/rollup-linux-x64-musl --no-save; \
     fi
 
-# Install project dependencies
-RUN pnpm install --frozen-lockfile --no-optional --unsafe-perm=true
-
-# Copy the rest of the application
+# Copy the rest of the application first
 COPY . .
+
+# Install dependencies for the root and each package
+RUN pnpm install --frozen-lockfile --no-optional
 
 # Copy the environment variable
 COPY ./packages/api/.env.production ./packages/api/.env
