@@ -18,7 +18,8 @@ const NoFields = () => {
   };
 
   const handleContact = () => {
-    window.location.href = import.meta.env.VITE_CONTACT;
+    window.location.href =
+      import.meta.env.VITE_CONTACT || "https://t.me/itsuperman";
   };
 
   return (

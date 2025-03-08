@@ -25,7 +25,6 @@ RUN pnpm install --frozen-lockfile --no-optional
 
 # Copy the environment variable
 COPY ./packages/api/.env.production ./packages/api/.env
-COPY ./packages/ui/.env.production ./packages/ui/.env
 
 # Build the application
 RUN pnpm run build
