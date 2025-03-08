@@ -84,7 +84,7 @@ Content-Type: application/json
 ### **3. Пример запроса с cURL**
 
 ```sh
-curl -X POST https://wf.mikagroup.uz:5173/auth/token \
+curl -X POST http://wf.mikagroup.uz:5173/auth/token \
      -H "Content-Type: application/json" \
      -d '{"phoneNumber": "998901234567", "branchName": "Tashkent Center"}'
 ```
