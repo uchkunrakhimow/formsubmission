@@ -24,7 +24,6 @@ const UserForm = () => {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
 
   const navigate = useNavigate();
 
@@ -36,18 +35,26 @@ const UserForm = () => {
           throw new Error("Номер телефона и токен обязательны");
         }
 
-        await verifyToken(phoneNumber, token);
-        const response = await getFormFields();
+        const res = await verifyToken(phoneNumber, token);
 
-        if (!response.data.fields || response.data.fields.length === 0) {
+        if (res.data.message === "You have already filled out the form.") {
+          navigate("/thanks");
+        }
+
+        const formFieldsResp = await getFormFields();
+
+        if (
+          !formFieldsResp.data.fields ||
+          formFieldsResp.data.fields.length === 0
+        ) {
           navigate("/no-fields");
           return;
         }
 
-        setFormFields(response.data.fields);
+        setFormFields(formFieldsResp.data.fields);
 
         const initialData = {};
-        response.data.fields.forEach((field) => {
+        formFieldsResp.data.fields.forEach((field) => {
           initialData[field._id] = "";
         });
         setFormData(initialData);
@@ -74,11 +81,7 @@ const UserForm = () => {
     e.preventDefault();
     try {
       await submitForm({ phoneNumber, token, branch, ...formData });
-      setSuccess(true);
-      setFormData({});
-      setTimeout(() => {
-        window.close();
-      }, 3000);
+      navigate("/thanks");
     } catch (err) {
       console.log("err mf:", err.message);
       setError(
@@ -103,12 +106,6 @@ const UserForm = () => {
             <Alert variant="destructive">
               <AlertTitle>Ошибка</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-          {success && (
-            <Alert className="mb-3">
-              <AlertTitle>Успех</AlertTitle>
-              <AlertDescription>Форма успешно отправлена!</AlertDescription>
             </Alert>
           )}
           <form onSubmit={handleSubmit} className="space-y-6">

@@ -10,6 +10,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import Login from "./pages/auth/Login";
 import TokenExpiredPage from "./components/TokenExpired";
 import NoFields from "./components/NoFields";
+import ThanksPage from "./components/Thanks";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
 
           <Route path="/expired" element={<TokenExpiredPage />} />
           <Route path="/no-fields" element={<NoFields />} />
+          <Route path="/thanks" element={<ThanksPage />} />
 
           {/* Redirect any unmatched routes */}
           <Route path="*" element={<Navigate to="/admin/login" />} />

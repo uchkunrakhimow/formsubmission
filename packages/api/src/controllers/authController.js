@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const Admin = require("../models/Admin");
+const FormSubmission = require("../models/FormSubmission");
 const short = require("short-uuid");
 const jwt = require("jsonwebtoken");
 const { sendSMS } = require("../service/sms.service");
@@ -68,6 +69,18 @@ exports.verifyToken = async (req, res) => {
 
     if (!user) {
       return res.status(401).json({ success: false, message: "Invalid token" });
+    }
+
+    const existingSubmission = await FormSubmission.findOne({
+      phoneNumber,
+      token,
+    });
+
+    if (existingSubmission) {
+      return res.status(200).json({
+        success: false,
+        message: "You have already filled out the form.",
+      });
     }
 
     return res
