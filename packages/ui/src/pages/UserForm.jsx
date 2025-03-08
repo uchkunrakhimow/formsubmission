@@ -37,6 +37,12 @@ const UserForm = () => {
 
         await verifyToken(phoneNumber, token);
         const response = await getFormFields();
+
+        if (!response.data.fields || response.data.fields.length === 0) {
+          navigate("/no-fields");
+          return;
+        }
+
         setFormFields(response.data.fields);
 
         const initialData = {};
