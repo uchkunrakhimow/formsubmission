@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API || "/api";
+const API_URL = import.meta.env.VITE_API || "/";
 
 // Create axios instance
 const api = axios.create({
@@ -23,21 +23,19 @@ api.interceptors.request.use(
 );
 
 // Auth services
-export const generateToken = (phoneNumber) =>
-  api.post("/auth/token", { phoneNumber });
 export const verifyToken = (phoneNumber, token) =>
   api.post("/auth/verify", { phoneNumber, token });
 export const adminLogin = (username, password) =>
   api.post("/auth/admin/login", { username, password });
 
 // Form services
-export const getFormFields = () => api.get("/forms/fields");
+export const getFormFields = () => api.get("/api/forms/fields");
 export const createFormField = (fieldData) =>
-  api.post("/forms/fields", fieldData);
+  api.post("/api/forms/fields", fieldData);
 export const updateFormField = (id, fieldData) =>
-  api.put(`/forms/fields/${id}`, fieldData);
-export const deleteFormField = (id) => api.delete(`/forms/fields/${id}`);
-export const submitForm = (formData) => api.post("/forms/submit", formData);
-export const getFormSubmissions = () => api.get("/forms/submissions");
+  api.put(`/api/forms/fields/${id}`, fieldData);
+export const deleteFormField = (id) => api.delete(`/api/forms/fields/${id}`);
+export const submitForm = (formData) => api.post("/api/forms/submit", formData);
+export const getFormSubmissions = () => api.get("/api/forms/submissions");
 
 export default api;

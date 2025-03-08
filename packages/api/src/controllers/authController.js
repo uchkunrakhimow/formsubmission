@@ -1,16 +1,38 @@
 const User = require("../models/User");
 const Admin = require("../models/Admin");
-const { v4: uuidv4 } = require("uuid");
+const short = require("short-uuid");
 const jwt = require("jsonwebtoken");
+const { sendSMS } = require("../service/sms.service");
 
 /**
  * Generate a token for a phone number and save to database
  */
-exports.generateToken = async (req, res) => {
-  try {
-    const { phoneNumber } = req.body;
 
-    const token = uuidv4();
+exports.generateToken = async (req, res) => {
+  const baseURL = process.env.BASE_URL;
+  const token = short.generate();
+  let { phoneNumber, branchName } = req.body;
+
+  if (phoneNumber.length < 9) {
+    res
+      .status(400)
+      .json({ success: false, message: "The phone number is too short" });
+  }
+
+  try {
+    phoneNumber = phoneNumber.replace(/\D/g, "");
+
+    if (phoneNumber.startsWith("998")) {
+      phoneNumber = phoneNumber.slice(0, 12);
+    } else {
+      phoneNumber = "998" + phoneNumber;
+    }
+
+    if (phoneNumber.length > 12) {
+      res
+        .status(400)
+        .json({ success: false, message: "The phone number is too long" });
+    }
 
     let user = await User.findOne({ phoneNumber });
 
@@ -18,40 +40,30 @@ exports.generateToken = async (req, res) => {
       user.token = token;
       user.createdAt = Date.now();
     } else {
-      user = new User({
-        phoneNumber,
-        token,
-      });
+      user = new User({ phoneNumber, token });
     }
 
-    await user.save();
+    const message = `Спасибо, что посетили наш ресторан, помогите улучшить его. ${baseURL}/form?p=${phoneNumber}&t=${token}&b=${branchName}`;
 
-    return res.status(200).json({
+    sendSMS(phoneNumber, message);
+
+    await user.save();
+    res.status(200).json({
       success: true,
-      token,
-      url: `${process.env.BASE_URL}/form?phone=${phoneNumber}&token=${token}`,
     });
   } catch (error) {
     console.error("Error generating token:", error);
-    return res.status(500).json({ success: false, message: "Server error" });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
 /**
  * Verify a token against a phone number
  */
+
 exports.verifyToken = async (req, res) => {
   try {
     const { phoneNumber, token } = req.body;
-
-    if (!phoneNumber || !token) {
-      return res.status(400).json({
-        success: false,
-        message: "Phone number and token are required",
-      });
-    }
-
-    // Look up the user
     const user = await User.findOne({ phoneNumber, token });
 
     if (!user) {

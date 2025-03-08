@@ -26,7 +26,7 @@ mongoose
   });
 
 // Routes
-app.use("/api/auth", authRoutes);
+app.use("/auth", authRoutes);
 app.use("/api/forms", formRoutes);
 
 // Serve static assets in production

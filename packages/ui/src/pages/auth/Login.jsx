@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { adminLogin } from "../../services/api";
 import { Button } from "@/components/ui/button";
@@ -35,7 +35,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4">
+    <div className="flex justify-center items-center min-h-screen bg-gray-50">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl">Вход для администратора</CardTitle>
@@ -83,11 +83,6 @@ const Login = () => {
               </Button>
             </div>
           </form>
-          <div className="mt-6 text-center">
-            <a href="/" className="font-medium transition">
-              Вернуться на главную
-            </a>
-          </div>
         </CardContent>
       </Card>
     </div>

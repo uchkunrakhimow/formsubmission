@@ -4,11 +4,10 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import TokenGenerator from "./pages/TokenGenerator";
 import UserForm from "./pages/UserForm";
 
 import Dashboard from "./pages/admin/Dashboard";
-import Auth from "./pages/auth/Login";
+import Login from "./pages/auth/Login";
 import TokenExpiredPage from "./components/TokenExpired";
 import NoFields from "./components/NoFields";
 
@@ -18,18 +17,17 @@ function App() {
       <div className="App">
         <Routes>
           {/* Public routes */}
-          <Route path="/" element={<TokenGenerator />} />
           <Route path="/form" element={<UserForm />} />
 
           {/* Admin routes */}
-          <Route path="/admin/login" element={<Auth />} />
+          <Route path="/admin/login" element={<Login />} />
           <Route path="/admin/dashboard" element={<Dashboard />} />
 
           <Route path="/expired" element={<TokenExpiredPage />} />
           <Route path="/no-fields" element={<NoFields />} />
 
           {/* Redirect any unmatched routes */}
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<Navigate to="/admin/login" />} />
         </Routes>
       </div>
     </Router>

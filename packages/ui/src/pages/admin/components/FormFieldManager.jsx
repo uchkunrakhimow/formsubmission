@@ -305,7 +305,7 @@ const FormFieldManager = () => {
         </h3>
 
         {fields.length === 0 ? (
-          <p className="text-gray-500 italic">
+          <p className="text-gray-500 italic text-sm">
             Поля еще не добавлены. Добавьте новое поле выше.
           </p>
         ) : (
