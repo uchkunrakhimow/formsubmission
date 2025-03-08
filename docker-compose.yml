@@ -1,0 +1,33 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:3000"
+    env_file:
+      - ./packages/api/.env.production
+    environment:
+      NODE_ENV: production
+    restart: always
+    networks:
+      - app-network
+
+ db:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - dbdata:/data/db
+    restart: always
+    networks:
+      - app-network
+
+
+volumes:
+  dbdata:
+
+
+networks:
+  app-network:
+    driver: bridge
