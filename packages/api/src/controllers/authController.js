@@ -43,7 +43,7 @@ exports.generateToken = async (req, res) => {
       user = new User({ phoneNumber, token });
     }
 
-    const message = `Спасибо, что посетили наш ресторан, помогите улучшить его. ${baseURL}/form?p=${phoneNumber}&t=${token}&b=${branchName}`;
+    const message = `Спасибо, что посетили наш ресторан, помогите улучшить его. ${baseURL}/form?p=${phoneNumber}&t=${token}&b=${branchName.trim()}`;
 
     sendSMS(phoneNumber, message);
 

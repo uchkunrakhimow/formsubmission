@@ -16,8 +16,9 @@ function useQuery() {
 const UserForm = () => {
   const query = useQuery();
 
-  const phoneNumber = query.get("phone");
-  const token = query.get("token");
+  const phoneNumber = query.get("p");
+  const token = query.get("t");
+  const branch = query.get("b");
 
   const [formFields, setFormFields] = useState([]);
   const [formData, setFormData] = useState({});
@@ -72,7 +73,7 @@ const UserForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await submitForm({ phoneNumber, token, ...formData });
+      await submitForm({ phoneNumber, token, branch, ...formData });
       setSuccess(true);
       setFormData({});
       setTimeout(() => {

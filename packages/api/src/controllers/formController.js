@@ -113,7 +113,7 @@ exports.deleteFormField = async (req, res) => {
  */
 exports.submitForm = async (req, res) => {
   try {
-    const { phoneNumber, token, ...formData } = req.body;
+    const { phoneNumber, token, branch, ...formData } = req.body;
 
     const user = await User.findOne({ phoneNumber, token });
 
@@ -124,6 +124,7 @@ exports.submitForm = async (req, res) => {
     const submission = new FormSubmission({
       phoneNumber,
       token,
+      branch,
       data: formData,
     });
 

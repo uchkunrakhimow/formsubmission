@@ -9,6 +9,10 @@ const FormSubmissionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  branch: {
+    type: String,
+    required: true,
+  },
   data: {
     type: Map,
     of: mongoose.Schema.Types.Mixed,
