@@ -6,7 +6,7 @@ deploy_to_production:
   only:
     - master
   script:
-    - cd /home/ubuntu/form-submission
+    - cd /form-submission
     - sudo git pull origin master
     - sudo docker compose build api
     - sudo docker compose up -d
