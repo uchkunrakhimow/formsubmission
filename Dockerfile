@@ -20,7 +20,6 @@ RUN if [ "$(uname -m)" = "aarch64" ]; then \
 # Copy the rest of the application first
 COPY . .
 
-
 # Install dependencies for the root and each package
 RUN pnpm install --frozen-lockfile --no-optional
 
